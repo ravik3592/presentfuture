@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>InteractiveMAP</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <style></style>
+
+    <div id="map"></div>
+
+    <div class="console" id="console-H">
+      <p>
+        <!-- <a href="https://www.worldgovernmentsummit.org/home" target="_blank"><img id="logo" src="img/WGS-summit-logo.png" /></a> -->
+        <img id="logo" src="img/WGS-summit-logo.png" />
+      </p>
+      <h1>World Government Analytics</h1>
+      <h2 id="narrativeSel">
+        By analysing the major metrics of data relating to various elements (such as Education, GDP, Economic Growth, Health expenditure, % of seats held by women in national parliaments etc ) by a single country or by region-wise, this interactive dashboard enables the head of the decision maker to achieve how the nation and its populace are succeeding in the present and the future.</h2>
+
+      <!-- <div class="dropdown" style="display:none">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Visualize colors by... <span class="caret"></span></button>
+
+        <ul id="mySelect0" class="dropdown-menu"></ul>
+      </div> -->
+
+  
+
+      <div class="dropdown" id="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownTitle" data-toggle="dropdown">Visualize colors by...</button>
+
+        <ul id="mySelect0" class="dropdown-menu">
+          <li class="dropdown-submenu">
+            <a id="Drop-0" class="test" tabindex="-1" href="#">index <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-0">
+              <!-- <li><a tabindex="-1"  href="#" class="sele" data-year="" >GINI index</a></li> -->
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2020"  data-nar="1" >happy planet index</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" data-nar="2">human development index</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2018" >sustainable economic development assessment (SEDA)</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-1" class="test" tabindex="-1" href="#">economic <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-1">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" data-nar="3">GDP growth(annual %)</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >GDP ($ USD billions PPP)</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >GDP per capita in $ (PPP)</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="6">Economic Growth</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-2" class="test" tabindex="-1" href="#">health <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-2">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >health expenditure % of GDP</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2019"  data-nar="4">health expenditure per person</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2020" >infant mortality</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2017" >maternal mortality per 100,000 live births</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-3" class="test" tabindex="-1" href="#">education <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-3">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="5">education expenditure% of GDP</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2018" >Education as % of GDP</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >% of primary school aged kids out of school</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-4" class="test" tabindex="-1" href="#">poverty <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-4">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="7">unemployment (%)</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >% of population in extreme poverty</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2020" >% of population with access to electricity</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-5" class="test" tabindex="-1" href="#">rights <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-5">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2022"  data-nar="8">political rights score</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2022"  data-nar="9">civil liberties score</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="10">political stability and absence of violence</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="11">government effectiveness</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >regulatory quality</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >rule of law</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021" >control of corruption</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2022" >judicial effectiveness score</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2022" >government integrity score</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2022" >overall economic freedom score</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2022" >financial freedom score</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2018" >government expenditure (% of GDP)</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-6" class="test" tabindex="-1" href="#">energy <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-6">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2019"  data-nar="12">CO2e emissions per capita</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2015" >share of electricity from renewables generation</a></li>
+            </ul>
+          </li>
+          <li class="dropdown-submenu">
+            <a id="Drop-7" class="test" tabindex="-1" href="#">other <span class="caret"></span></a>
+            <ul class="dropdown-menu sub" id="subDrop-7">
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="13">% of seats held by women in national parliaments</a></li>
+              <li><a tabindex="-1"  href="#" class="sele" data-year="2021"  data-nar="14">Military Spending as % of GDP</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+     
+
+      <div class="map-overlay-inner">
+        <h2 id="year">YEAR</h2>
+        <input id="slider" type="range" min="2014" max="2022" step="1" value="2021" />
+      </div>
+
+      <div class="legend-grad" id="legend-grad">
+        <div id="gradient" class="row colors"></div>
+        <div class="row labels">
+          <div class="label" id="l1">-</div>
+          <div class="label l2" id="l2">-</div>
+        </div>
+      </div>
+
+      <div class="first3-tot" id="first3-tot">
+      <h3 class="first3">Top 3 countires</h3>
+      <div class="first3-box"><h3 class="first3-label" id="first3-label-0"></h3><h3 class="first3-val"id="first3-val-0"></h3></div>
+      <div class="first3-box"><h3 class="first3-label" id="first3-label-1"></h3><h3 class="first3-val"id="first3-val-1"></h3></div>
+      <div class="first3-box"><h3 class="first3-label" id="first3-label-2"></h3><h3 class="first3-val"id="first3-val-2"></h3></div>
+    </div>
+      <!-- <h2 id="error" style="display: none">DATA NOT AVAILABLE FOR THIS YEAR</h2> -->
+    </div>
+
+
+
+   
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script> -->
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
